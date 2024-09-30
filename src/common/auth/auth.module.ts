@@ -10,17 +10,19 @@ import { PrismaModule } from '../prisma/prisma.module';
     PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
     }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
+      useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('SECRET_KEY'),
+        signOptions: { expiresIn: '1h' },
       }),
+      inject: [ConfigService],
     }),
   ],
   providers: [AuthService],
   controllers: [AuthController],
-  exports: [JwtModule], // Export JwtModule to make JwtService available
+  exports: [JwtModule],
 })
 export class AuthModule {}
