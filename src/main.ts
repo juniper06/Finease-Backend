@@ -13,7 +13,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   // Configure CORS
-  const corsOrigin = configService.get<string>('CORS_ORIGIN') || 'http://localhost:3002';
+  const corsOrigin = configService.get<string>('CORS_ORIGIN') || 'https://finease-backend-production.up.railway.app';
   app.enableCors({
     origin: [corsOrigin],
     credentials: true,
