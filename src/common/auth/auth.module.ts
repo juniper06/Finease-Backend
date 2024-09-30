@@ -13,17 +13,14 @@ import { PrismaModule } from '../prisma/prisma.module';
     }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('SECRET_KEY'),
-        signOptions: { 
-          expiresIn: '1d', // Set token expiration to 1 day
-        },
-      }),
       inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('SECRET_KEY'),
+      }),
     }),
   ],
   providers: [AuthService],
   controllers: [AuthController],
-  exports: [JwtModule, AuthService], // Export both JwtModule and AuthService
+  exports: [JwtModule], // Export JwtModule to make JwtService available
 })
 export class AuthModule {}

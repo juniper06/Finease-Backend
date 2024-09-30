@@ -2,14 +2,12 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
   ) {}
 
   async login(email: string, password: string) {
@@ -17,7 +15,7 @@ export class AuthService {
       select: {
         id: true,
         password: true,
-        role: true,
+        role: true, 
       },
       where: {
         email,
@@ -30,11 +28,11 @@ export class AuthService {
     if (!isMatch) {
       throw new UnauthorizedException('Incorrect password');
     }
-    const payload = { userId: user.id, role: user.role };
+    const payload = { userId: user.id, role: user.role }; 
     return {
       data: {
         token: await this.jwtService.signAsync(payload),
-        role: user.role,
+        role: user.role, 
       },
     };
   }
