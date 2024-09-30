@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly prisma: PrismaService,
-    private jwtService: JwtService,
+    private readonly jwtService: JwtService, // Ensure JwtService is injected
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -35,7 +35,7 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token);
       const user = await this.checkAuth(payload.userId);
       request['user'] = user;
-      return !!user
+      return !!user;
     } catch (error) {
       throw new UnauthorizedException('Invalid Token');
     }
